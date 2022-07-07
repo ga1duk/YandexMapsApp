@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">YandexMapsTest</string>
     <string name="permission_not_granted_toast">Unfortunately, without your permission we won\'t be able to show your current position</string>
+    <string name="tap_on_mark_toast_text">Congrats! You tapped mark</string>
 </resources>
