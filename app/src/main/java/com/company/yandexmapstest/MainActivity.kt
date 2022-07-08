@@ -3,11 +3,13 @@ package com.company.yandexmapstest
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.PointF
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -16,6 +18,7 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.*
+import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
@@ -23,47 +26,113 @@ import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 
 
-private const val FIRST_POINT_LAT = 55.666127
-private const val FIRST_POINT_LON = 37.733709
-private const val SECOND_POINT_LAT = 55.765484
-private const val SECOND_POINT_LON = 37.646856
+//private const val FIRST_POINT_LAT = 55.666127
+//private const val FIRST_POINT_LON = 37.733709
+//private const val SECOND_POINT_LAT = 55.765484
+//private const val SECOND_POINT_LON = 37.646856
 
 class MainActivity : AppCompatActivity(), UserLocationObjectListener {
 
-    private lateinit var mapview: MapView
+    private lateinit var markerListener: MapObjectTapListener
+    private lateinit var mapView: MapView
     private lateinit var mapKit: MapKit
     private lateinit var userLocationLayer: UserLocationLayer
+    private lateinit var mapObjectCollection: MapObjectCollection
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
+//        Указываем ключ для Yandex.MapKit
         MapKitFactory.setApiKey(MAPKIT_API_KEY)
+//        Инициализируем библиотеку
         MapKitFactory.initialize(this)
 
         setContentView(R.layout.activity_main)
         super.onCreate(savedInstanceState)
 
-        mapview = findViewById(R.id.mapview)
-        mapview.map.isRotateGesturesEnabled = false
+        mapView = findViewById(R.id.map_view)
 
         mapKit = MapKitFactory.getInstance()
         mapKit.resetLocationManagerToDefault()
 
+//        Проверяем, имеется ли разрешение на определение геопозиции пользователя
         requestLocationPermission()
 
-        val mapObjects: MapObjectCollection = mapview.map.mapObjects.addCollection()
+//        Создаём коллекцию маркеров
+        mapObjectCollection = mapView.map.mapObjects.addCollection()
 
-        val mark: PlacemarkMapObject =
-            mapObjects.addPlacemark(Point(FIRST_POINT_LAT, FIRST_POINT_LON))
-        mark.setIcon(ImageProvider.fromResource(this, R.drawable.mark))
+////        Добавляем на карту 2 маркера в определённые заранее точки (при тапе на маркер выводится Тост)
+//        val mapObjects: MapObjectCollection = mapview.map.mapObjects.addCollection()
+//
+//        val mark: PlacemarkMapObject =
+//            mapObjects.addPlacemark(Point(FIRST_POINT_LAT, FIRST_POINT_LON))
+//        mark.setIcon(ImageProvider.fromResource(this, R.drawable.mark))
+//
+//        val anotherMark: PlacemarkMapObject =
+//            mapObjects.addPlacemark(Point(SECOND_POINT_LAT, SECOND_POINT_LON))
+//        anotherMark.setIcon(ImageProvider.fromResource(this, R.drawable.mark))
+//
+//        mapObjects.addTapListener { _, _ ->
+//            Toast.makeText(this, getString(R.string.tap_on_mark_toast_text), Toast.LENGTH_LONG)
+//                .show()
+//            true
+//        }
 
-        val anotherMark: PlacemarkMapObject =
-            mapObjects.addPlacemark(Point(SECOND_POINT_LAT, SECOND_POINT_LON))
-        anotherMark.setIcon(ImageProvider.fromResource(this, R.drawable.mark))
-
-        mapObjects.addTapListener { _, _ ->
-            Toast.makeText(this, getString(R.string.tap_on_mark_toast_text), Toast.LENGTH_LONG).show()
+        markerListener = MapObjectTapListener { _, point ->
+            Toast.makeText(
+                this,
+                "${point.latitude}, ${point.longitude}",
+                Toast.LENGTH_LONG
+            ).show()
             true
         }
+
+//        Обрабатываем нажатия на точки на карте
+        val listener = object : InputListener {
+            override fun onMapLongTap(map: Map, point: Point) {
+            }
+
+            override fun onMapTap(map: Map, point: Point) {
+//                Добавляем маркер в точку нажатия (и в коллекцию маркеров)
+                addMarker(point.latitude, point.longitude, R.drawable.mark)
+            }
+        }
+        mapView.map.addInputListener(listener)
+    }
+
+    override fun onObjectAdded(userLocationView: UserLocationView) {
+//                Отображаем точку с текущей геопозицией по центру экрана
+        userLocationLayer.setAnchor(
+            PointF(
+                (mapView.width * 0.5).toFloat(),
+                (mapView.height * 0.5).toFloat()
+            ),
+            PointF(
+                (mapView.width * 0.5).toFloat(),
+                (mapView.height * 0.83).toFloat()
+            )
+        )
+//                Перемещаем камеру в точку с текущей геопозицией пользователя, увеличиваем масштаб карты в 15 раз
+        mapView.map.move(
+            CameraPosition(Point(0.0, 0.0), 15F, 0F, 0F)
+        )
+
+        val pinIcon: CompositeIcon = userLocationView.pin.useCompositeIcon()
+
+//                Меняем иконку для точки с текущей геопозицией
+        pinIcon.setIcon(
+            "pin",
+            ImageProvider.fromResource(this@MainActivity, R.drawable.search_result),
+            IconStyle().setAnchor(PointF(0.5f, 0.5f))
+                .setRotationType(RotationType.ROTATE)
+                .setZIndex(1f)
+                .setScale(0.5f)
+        )
+    }
+
+    override fun onObjectRemoved(userLocationView: UserLocationView) {
+    }
+
+    override fun onObjectUpdated(userLocationView: UserLocationView, p1: ObjectEvent) {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -100,15 +169,16 @@ class MainActivity : AppCompatActivity(), UserLocationObjectListener {
             }
         }
 
+//
     private fun setUpUserLocationLayer() {
-        userLocationLayer = mapKit.createUserLocationLayer(mapview.mapWindow)
+        userLocationLayer = mapKit.createUserLocationLayer(mapView.mapWindow)
         userLocationLayer.isVisible = true
-        userLocationLayer.isHeadingEnabled = true
+//        userLocationLayer.isHeadingEnabled = true
         userLocationLayer.setObjectListener(this)
     }
 
     override fun onStop() {
-        mapview.onStop()
+        mapView.onStop()
         mapKit.onStop()
         super.onStop()
     }
@@ -116,39 +186,23 @@ class MainActivity : AppCompatActivity(), UserLocationObjectListener {
     override fun onStart() {
         super.onStart()
         mapKit.onStart()
-        mapview.onStart()
+        mapView.onStart()
     }
 
-    override fun onObjectAdded(userLocationView: UserLocationView) {
-        userLocationLayer.setAnchor(
-            PointF(
-                (mapview.width * 0.5).toFloat(),
-                (mapview.height * 0.5).toFloat()
-            ),
-            PointF(
-                (mapview.width * 0.5).toFloat(),
-                (mapview.height * 0.83).toFloat()
-            )
+    fun addMarker(
+        lat: Double,
+        lon: Double,
+        @DrawableRes imageRes: Int,
+        userData: String? = null
+    ): PlacemarkMapObject {
+        val marker = mapObjectCollection.addPlacemark(
+            Point(lat, lon),
+            ImageProvider.fromResource(this, imageRes)
         )
-        mapview.map.move(
-            CameraPosition(Point(0.0, 0.0), 15F, 0F, 0F)
-        )
-
-        val pinIcon: CompositeIcon = userLocationView.pin.useCompositeIcon()
-
-        pinIcon.setIcon(
-            "pin",
-            ImageProvider.fromResource(this, R.drawable.search_result),
-            IconStyle().setAnchor(PointF(0.5f, 0.5f))
-                .setRotationType(RotationType.ROTATE)
-                .setZIndex(1f)
-                .setScale(0.5f)
-        )
+        marker.userData = userData
+        markerListener.let { marker.addTapListener(it) }
+        return marker
     }
 
-    override fun onObjectRemoved(userLocationView: UserLocationView) {
-    }
-
-    override fun onObjectUpdated(userLocationView: UserLocationView, p1: ObjectEvent) {
-    }
+    private val markerDataList = mutableListOf<MarkerData>()
 }
