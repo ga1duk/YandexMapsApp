@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mapViewFragment">
+    <fragment
+        android:id="@+id/mapViewFragment"
+        android:name="com.company.yandexmapstest.ui.MapViewFragment"
+        android:label="MapViewFragment">
+        <action
+            android:id="@+id/action_mapViewFragment_to_markersFragment"
+            app:destination="@id/markersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/markersFragment"
+        android:name="com.company.yandexmapstest.ui.MarkersFragment"
+        android:label="MarkersFragment" />
+</navigation>
