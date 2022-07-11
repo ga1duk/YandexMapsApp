@@ -1,6 +1,7 @@
-package com.company.yandexmapstest
+package com.company.yandexmapstest.entity
 
-data class MarkerData(
+data class MarkerModel(
+//    val id: Long,
     val latitude: Double,
     val longitude: Double,
     val userData: String? = null

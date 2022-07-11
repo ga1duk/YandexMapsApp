@@ -1,9 +1,8 @@
-package com.company.yandexmapstest
+package com.company.yandexmapstest.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.PointF
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +12,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.company.yandexmapstest.MAPKIT_API_KEY
+import com.company.yandexmapstest.R
+import com.company.yandexmapstest.dao.MarkerDao
+import com.company.yandexmapstest.db.AppDb
+import com.company.yandexmapstest.entity.MarkerModel
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -38,6 +42,7 @@ class MainActivity : AppCompatActivity(), UserLocationObjectListener {
     private lateinit var mapKit: MapKit
     private lateinit var userLocationLayer: UserLocationLayer
     private lateinit var mapObjectCollection: MapObjectCollection
+    private lateinit var dao: MarkerDao
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +53,8 @@ class MainActivity : AppCompatActivity(), UserLocationObjectListener {
 
         setContentView(R.layout.activity_main)
         super.onCreate(savedInstanceState)
+
+        dao = AppDb.getInstance(this).markerDao
 
         mapView = findViewById(R.id.map_view)
 
@@ -201,8 +208,7 @@ class MainActivity : AppCompatActivity(), UserLocationObjectListener {
         )
         marker.userData = userData
         markerListener.let { marker.addTapListener(it) }
+        dao.save(MarkerModel(lat, lon, userData))
         return marker
     }
-
-    private val markerDataList = mutableListOf<MarkerData>()
 }
