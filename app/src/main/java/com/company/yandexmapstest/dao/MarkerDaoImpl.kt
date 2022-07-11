@@ -23,25 +23,10 @@ class MarkerDaoImpl(private val db: SQLiteDatabase) : MarkerDao {
         const val COLUMN_LAT = "latitude"
         const val COLUMN_LON = "longitude"
         const val COLUMN_INFO = "information"
-//        val ALL_COLUMNS = arrayOf(
-//            COLUMN_ID,
-//            COLUMN_NOTE
-//        )
     }
 
     override fun save(markerModel: MarkerModel) {
-//        db.execSQL(
-//            """
-//                INSERT notes SET
-//                likes = likes + CASE WHEN likedByMe THEN - 1 ELSE 1 END,
-//                likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END
-//                WHERE id = ?;
-//            """.trimIndent(), arrayOf(id)
-//        )
         val values = ContentValues().apply {
-//            if (note.id != 0L) {
-//                put(PostColumns.COLUMN_ID, note.id)
-//            }
             put(MarkerColumns.COLUMN_LAT, markerModel.latitude)
             put(MarkerColumns.COLUMN_LON, markerModel.longitude)
             put(MarkerColumns.COLUMN_INFO, markerModel.userData)

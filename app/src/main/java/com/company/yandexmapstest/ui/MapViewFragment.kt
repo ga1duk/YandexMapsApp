@@ -127,7 +127,6 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
     override fun onObjectUpdated(userLocationView: UserLocationView, p1: ObjectEvent) {
     }
 
-    //
     private fun setUpUserLocationLayer() {
         userLocationLayer = mapKit.createUserLocationLayer(mapView.mapWindow)
         userLocationLayer.isVisible = true
