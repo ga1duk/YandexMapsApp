@@ -1,4 +1,4 @@
-package com.company.yandexmapstest.entity
+package com.company.yandexmapstest.dto
 
 data class MarkerModel(
     val latitude: Double,

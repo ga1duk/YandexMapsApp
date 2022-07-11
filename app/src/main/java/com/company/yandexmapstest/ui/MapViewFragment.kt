@@ -15,12 +15,12 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.dao.MarkerDao
 import com.company.yandexmapstest.databinding.FragmentMapViewBinding
-import com.company.yandexmapstest.db.AppDb
-import com.company.yandexmapstest.entity.MarkerModel
+import com.company.yandexmapstest.entity.MarkerEntity
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -32,7 +32,11 @@ import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MapViewFragment : Fragment(), UserLocationObjectListener {
 
     private lateinit var markerListener: MapObjectTapListener
@@ -40,7 +44,9 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
     private lateinit var mapKit: MapKit
     private lateinit var userLocationLayer: UserLocationLayer
     private lateinit var mapObjectCollection: MapObjectCollection
-    private lateinit var dao: MarkerDao
+
+    @Inject
+    lateinit var dao: MarkerDao
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -49,8 +55,6 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentMapViewBinding.inflate(inflater, container, false)
-
-        dao = AppDb.getInstance(requireContext()).markerDao
 
         mapView = binding.mapView
 
@@ -83,7 +87,17 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
 
             override fun onMapTap(map: Map, point: Point) {
 //                Добавляем маркер в точку нажатия (и в коллекцию маркеров)
-                addMarker(point.latitude, point.longitude, R.drawable.mark)
+                lifecycleScope.launch {
+                    try {
+                        addMarker(point.latitude, point.longitude, R.drawable.mark)
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            requireContext(),
+                            "не получилось добавить маркер, попробуйте позже",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             }
         }
         mapView.map.addInputListener(listener)
@@ -180,7 +194,7 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
         mapView.onStart()
     }
 
-    fun addMarker(
+    suspend fun addMarker(
         lat: Double,
         lon: Double,
         @DrawableRes imageRes: Int,
@@ -192,7 +206,7 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
         )
         marker.userData = userData
         markerListener.let { marker.addTapListener(it) }
-        dao.save(MarkerModel(lat, lon, userData))
+        dao.insert(MarkerEntity(latitude = lat, longitude = lon, userData = userData))
         return marker
     }
 }
