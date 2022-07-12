@@ -13,6 +13,7 @@ import com.company.yandexmapstest.adapter.MarkerAdapter
 import com.company.yandexmapstest.adapter.OnInteractionListener
 import com.company.yandexmapstest.dao.MarkerDao
 import com.company.yandexmapstest.databinding.FragmentMarkersBinding
+import com.company.yandexmapstest.entity.MarkerEntity
 import com.company.yandexmapstest.ui.MapViewFragment.Companion.textArg
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -31,14 +32,27 @@ class MarkersFragment : Fragment() {
     ): View {
         val binding = FragmentMarkersBinding.inflate(inflater, container, false)
 
-
         val adapter = MarkerAdapter(object : OnInteractionListener {
-            override fun onClick(marker: String) {
+            override fun onClick(marker: MarkerEntity) {
                 findNavController().navigate(
                     R.id.action_markersFragment_to_mapViewFragment,
                     Bundle().apply {
-                        textArg = marker
+                        textArg = "${marker.latitude}, ${marker.longitude}"
                     })
+            }
+
+            override fun onRemove(marker: MarkerEntity) {
+                lifecycleScope.launch {
+                    try {
+                        dao.removeById(marker.id!!)
+                    } catch (e: Exception) {
+                        Toast.makeText(
+                            requireContext(),
+                            "Не получилось удалить тост. Попробуйте позже",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             }
         })
 
@@ -46,11 +60,7 @@ class MarkersFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                val markers = mutableListOf<String>()
-                for (i in dao.getAllMarkers()) {
-                    markers.add("${i.latitude}, ${i.longitude}")
-                }
-                adapter.submitList(markers)
+                adapter.submitList(dao.getAllMarkers())
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),

@@ -12,4 +12,7 @@ interface MarkerDao {
 
     @Insert
     suspend fun insert(marker: MarkerEntity)
+
+    @Query("DELETE FROM MarkerEntity WHERE id = :id")
+    suspend fun removeById(id: Long)
 }
