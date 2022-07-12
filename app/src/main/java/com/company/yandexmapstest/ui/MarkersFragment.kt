@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.company.yandexmapstest.adapter.MarkerAdapter
 import com.company.yandexmapstest.dao.MarkerDao
 import com.company.yandexmapstest.databinding.FragmentMarkersBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,10 +27,17 @@ class MarkersFragment : Fragment() {
     ): View {
         val binding = FragmentMarkersBinding.inflate(inflater, container, false)
 
+        val adapter = MarkerAdapter()
+
+        binding.rvMarkers.adapter = adapter
+
         lifecycleScope.launch {
             try {
-                binding.tvMarker.text =
-                    "${dao.getAllMarkers()[0].latitude}, ${dao.getAllMarkers()[0].longitude}"
+                val markers = mutableListOf<String>()
+                for (i in dao.getAllMarkers()) {
+                    markers.add("${i.latitude}, ${i.longitude}")
+                }
+                adapter.submitList(markers)
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),
