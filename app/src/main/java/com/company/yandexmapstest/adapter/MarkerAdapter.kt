@@ -8,16 +8,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.CardMarkerBinding
+import com.company.yandexmapstest.dto.Marker
 import com.company.yandexmapstest.entity.MarkerEntity
 
 
 interface OnInteractionListener {
-    fun onClick(marker: MarkerEntity) {}
-    fun onRemove(marker: MarkerEntity) {}
+    fun onClick(marker: Marker) {}
+    fun onRemove(marker: Marker) {}
 }
 
 class MarkerAdapter(private val listener: OnInteractionListener) :
-    ListAdapter<MarkerEntity, MarkerViewHolder>(MarkerDiffCallback()) {
+    ListAdapter<Marker, MarkerViewHolder>(MarkerDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarkerViewHolder {
         val binding = CardMarkerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MarkerViewHolder(binding, listener)
@@ -34,7 +35,7 @@ class MarkerViewHolder(
     private val listener: OnInteractionListener
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(marker: MarkerEntity) {
+    fun bind(marker: Marker) {
         with(binding) {
             tvMarker.text = "${marker.latitude}, ${marker.longitude}"
             root.setOnClickListener {
@@ -63,12 +64,12 @@ class MarkerViewHolder(
     }
 }
 
-class MarkerDiffCallback : DiffUtil.ItemCallback<MarkerEntity>() {
-    override fun areItemsTheSame(oldItem: MarkerEntity, newItem: MarkerEntity): Boolean {
+class MarkerDiffCallback : DiffUtil.ItemCallback<Marker>() {
+    override fun areItemsTheSame(oldItem: Marker, newItem: Marker): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: MarkerEntity, newItem: MarkerEntity): Boolean {
+    override fun areContentsTheSame(oldItem: Marker, newItem: Marker): Boolean {
         return oldItem == newItem
     }
 }

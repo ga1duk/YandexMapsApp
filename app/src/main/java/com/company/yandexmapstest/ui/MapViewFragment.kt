@@ -16,12 +16,15 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.dao.MarkerDao
 import com.company.yandexmapstest.databinding.FragmentMapViewBinding
+import com.company.yandexmapstest.dto.Marker
 import com.company.yandexmapstest.entity.MarkerEntity
 import com.company.yandexmapstest.util.StringArg
+import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -40,6 +43,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MapViewFragment : Fragment(), UserLocationObjectListener {
 
+    private val viewModel: MarkerViewModel by viewModels(ownerProducer = ::requireParentFragment)
+
     companion object {
         var Bundle.textArg: String? by StringArg
     }
@@ -49,9 +54,6 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
     private lateinit var mapKit: MapKit
     private lateinit var userLocationLayer: UserLocationLayer
     private lateinit var mapObjectCollection: MapObjectCollection
-
-    @Inject
-    lateinit var dao: MarkerDao
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -211,7 +213,7 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
         mapView.onStart()
     }
 
-    suspend fun addMarker(
+    fun addMarker(
         lat: Double,
         lon: Double,
         @DrawableRes imageRes: Int,
@@ -223,7 +225,7 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
         )
         marker.userData = userData
         markerListener.let { marker.addTapListener(it) }
-        dao.insert(MarkerEntity(latitude = lat, longitude = lon, userData = userData))
+        viewModel.save(MarkerEntity(latitude = lat, longitude = lon, userData = userData))
         return marker
     }
 }
