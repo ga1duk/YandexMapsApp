@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.company.yandexmapstest.R
 import com.company.yandexmapstest.adapter.MarkerAdapter
+import com.company.yandexmapstest.adapter.OnInteractionListener
 import com.company.yandexmapstest.dao.MarkerDao
 import com.company.yandexmapstest.databinding.FragmentMarkersBinding
+import com.company.yandexmapstest.ui.MapViewFragment.Companion.textArg
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +31,16 @@ class MarkersFragment : Fragment() {
     ): View {
         val binding = FragmentMarkersBinding.inflate(inflater, container, false)
 
-        val adapter = MarkerAdapter()
+
+        val adapter = MarkerAdapter(object : OnInteractionListener {
+            override fun onClick(marker: String) {
+                findNavController().navigate(
+                    R.id.action_markersFragment_to_mapViewFragment,
+                    Bundle().apply {
+                        textArg = marker
+                    })
+            }
+        })
 
         binding.rvMarkers.adapter = adapter
 

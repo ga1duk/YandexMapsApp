@@ -21,6 +21,7 @@ import com.company.yandexmapstest.R
 import com.company.yandexmapstest.dao.MarkerDao
 import com.company.yandexmapstest.databinding.FragmentMapViewBinding
 import com.company.yandexmapstest.entity.MarkerEntity
+import com.company.yandexmapstest.util.StringArg
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -38,6 +39,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MapViewFragment : Fragment(), UserLocationObjectListener {
+
+    companion object {
+        var Bundle.textArg: String? by StringArg
+    }
 
     private lateinit var markerListener: MapObjectTapListener
     private lateinit var mapView: MapView
@@ -63,6 +68,18 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
 
 //        Проверяем, имеется ли разрешение на определение геопозиции пользователя
         requestLocationPermission()
+
+        if (arguments?.textArg != null) {
+            val parts = arguments?.textArg?.split(",")
+            val lat = parts?.get(0)
+            val lon = parts?.get(1)
+            if (lat != null && lon != null) {
+                mapView.map.mapObjects.addPlacemark(
+                    Point(lat.toDouble(), lon.toDouble()),
+                    ImageProvider.fromResource(requireContext(), R.drawable.mark)
+                )
+            }
+        }
 
         binding.btnMarkers.setOnClickListener {
             findNavController().navigate(R.id.action_mapViewFragment_to_markersFragment)
