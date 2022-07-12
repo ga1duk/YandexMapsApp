@@ -12,7 +12,7 @@ data class MarkerEntity(
     val longitude: Double,
     val userData: String? = null
 ) {
-fun toDto() = Marker(id, latitude, longitude, userData)
+    fun toDto() = Marker(id, latitude, longitude, userData)
 }
 
 

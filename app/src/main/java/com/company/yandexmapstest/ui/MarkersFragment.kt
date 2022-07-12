@@ -13,7 +13,6 @@ import com.company.yandexmapstest.adapter.MarkerAdapter
 import com.company.yandexmapstest.adapter.OnInteractionListener
 import com.company.yandexmapstest.databinding.FragmentMarkersBinding
 import com.company.yandexmapstest.dto.Marker
-import com.company.yandexmapstest.entity.MarkerEntity
 import com.company.yandexmapstest.ui.MapViewFragment.Companion.textArg
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import dagger.hilt.android.AndroidEntryPoint

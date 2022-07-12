@@ -15,13 +15,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
-import com.company.yandexmapstest.dao.MarkerDao
 import com.company.yandexmapstest.databinding.FragmentMapViewBinding
-import com.company.yandexmapstest.dto.Marker
 import com.company.yandexmapstest.entity.MarkerEntity
 import com.company.yandexmapstest.util.StringArg
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
@@ -38,7 +36,6 @@ import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MapViewFragment : Fragment(), UserLocationObjectListener {

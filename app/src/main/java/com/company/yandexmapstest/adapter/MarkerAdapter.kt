@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.CardMarkerBinding
 import com.company.yandexmapstest.dto.Marker
-import com.company.yandexmapstest.entity.MarkerEntity
 
 
 interface OnInteractionListener {

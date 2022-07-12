@@ -3,7 +3,6 @@ package com.company.yandexmapstest.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.company.yandexmapstest.dto.Marker
 import com.company.yandexmapstest.entity.MarkerEntity
 import kotlinx.coroutines.flow.Flow
 
