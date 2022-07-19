@@ -5,9 +5,6 @@
     <string name="description_marker_menu">Marker menu</string>
     <string name="menu_remove">Remove</string>
     <string name="menu_edit">Edit</string>
-    <string name="dialog_positive_button_text">Yes</string>
-    <string name="dialog_negative_button_text">No</string>
-    <string name="dialog_title_set_description">Marker name</string>
     <string name="markers_list">markers list</string>
     <string name="menu_save">Save</string>
     <string name="positive_button_fragment_dialog_text">ok</string>

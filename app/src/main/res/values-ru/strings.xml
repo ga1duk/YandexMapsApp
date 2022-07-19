@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">YandexMapsTest</string>
+    <string name="permission_not_granted_toast">К сожалению, без вашего разрешения мы не имеем права показывать вашу текущую позицию</string>
+    <string name="tap_on_mark_toast_text">Поздравления! Вы нажали на маркер!</string>
+    <string name="description_marker_menu">Меню маркера</string>
+    <string name="menu_remove">Удалить</string>
+    <string name="menu_edit">Изменить</string>
+    <string name="markers_list">Список маркеров</string>
+    <string name="menu_save">Сохранить</string>
+    <string name="positive_button_fragment_dialog_text">ок</string>
+    <string name="negative_button_fragment_dialog_text">отмена</string>
+    <string name="dialog_title_text">Описание маркера</string>
+    <string name="dialog_message_text">Введите новое описание</string>
+    <string name="fragment_edit_et_hint">введите текст здесь</string>
+</resources>
