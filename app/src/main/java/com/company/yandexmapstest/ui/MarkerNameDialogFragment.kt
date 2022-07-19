@@ -6,14 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import com.company.yandexmapstest.databinding.FragmentDialogMarkerNameBinding
+import com.company.yandexmapstest.entity.MarkerEntity
+import com.company.yandexmapstest.util.CoordinatesPreferences
+import com.company.yandexmapstest.viewmodel.MarkerViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class MarkerNameDialogFragment : DialogFragment() {
 
-    interface MarkerNameDialogListener {
-        fun onFinishEditDialog(inputText: String)
-    }
+    @Inject
+    lateinit var prefs: CoordinatesPreferences
+
+    private val viewModel: MarkerViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
     private lateinit var binding: FragmentDialogMarkerNameBinding
 
@@ -39,13 +47,14 @@ class MarkerNameDialogFragment : DialogFragment() {
         }
 
         binding.btnOk.setOnClickListener {
-            sendBackResult()
+            viewModel.save(
+                MarkerEntity(
+                    latitude = prefs.lat?.toDouble()!!,
+                    longitude = prefs.lon?.toDouble()!!,
+                    description = binding.etDescription.text.toString()
+                )
+            )
+            dismiss()
         }
-    }
-
-    private fun sendBackResult() {
-        val listener: MarkerNameDialogListener = targetFragment as MarkerNameDialogListener
-        listener.onFinishEditDialog(binding.etDescription.text.toString())
-        dismiss()
     }
 }
