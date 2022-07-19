@@ -31,7 +31,7 @@ class MarkerAdapter(private val listener: OnInteractionListener) :
 }
 
 
-class MarkerViewHolder (
+class MarkerViewHolder(
     private val binding: CardMarkerBinding,
     private val listener: OnInteractionListener
 ) :
@@ -39,18 +39,18 @@ class MarkerViewHolder (
     fun bind(marker: Marker) {
         with(binding) {
             tvMarker.text = marker.description
-                root.setOnClickListener {
-                    listener.onClick(marker)
-                }
+            root.setOnClickListener {
+                listener.onClick(marker)
+            }
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_marker)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.edit -> {
-                            listener.onEdit(marker)
-                            true
-                        }
+                                listener.onEdit(marker)
+                                true
+                            }
                             R.id.remove -> {
                                 listener.onRemove(marker)
                                 true

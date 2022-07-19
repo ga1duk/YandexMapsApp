@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/markersFragment"
         android:name="com.company.yandexmapstest.ui.MarkersFragment"
-        android:label="MarkersFragment" >
+        android:label="MarkersFragment">
         <action
             android:id="@+id/action_markersFragment_to_mapViewFragment"
             app:destination="@id/mapViewFragment" />
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/editFragment"
         android:name="com.company.yandexmapstest.ui.EditFragment"
-        android:label="EditFragment" >
+        android:label="EditFragment">
         <action
             android:id="@+id/action_editFragment_to_markersFragment"
             app:destination="@id/markersFragment" />

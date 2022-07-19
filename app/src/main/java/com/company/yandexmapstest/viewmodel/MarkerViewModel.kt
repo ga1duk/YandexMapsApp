@@ -1,10 +1,8 @@
 package com.company.yandexmapstest.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.company.yandexmapstest.dto.Marker
 import com.company.yandexmapstest.entity.MarkerEntity
 import com.company.yandexmapstest.repository.MarkerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

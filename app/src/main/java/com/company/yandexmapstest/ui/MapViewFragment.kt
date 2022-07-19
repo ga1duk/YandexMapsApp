@@ -15,10 +15,8 @@ import com.company.yandexmapstest.util.StringArg
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.*
 import com.yandex.mapkit.map.Map
-import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.image.ImageProvider
@@ -38,7 +36,7 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 
     private lateinit var mapView: MapView
     private lateinit var mapKit: MapKit
-    private lateinit var userLocationLayer: UserLocationLayer
+//    private lateinit var userLocationLayer: UserLocationLayer
     private lateinit var mapObjectCollection: MapObjectCollection
     private lateinit var markerNameDialog: MarkerNameDialogFragment
 
@@ -78,16 +76,6 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 //        Создаём коллекцию маркеров
         mapObjectCollection = mapView.map.mapObjects.addCollection()
 
-////    При необходимости, обрабатываем тап по маркеру
-//        markerListener = MapObjectTapListener { _, point ->
-//            Toast.makeText(
-//                requireContext(),
-//                "${point.latitude}, ${point.longitude}",
-//                Toast.LENGTH_LONG
-//            ).show()
-//            true
-//        }
-
 //        Обрабатываем нажатия на точки на карте
         val listener = object : InputListener {
             override fun onMapLongTap(map: Map, point: Point) {
@@ -116,6 +104,7 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
             override fun onMapTap(map: Map, point: Point) {
             }
         }
+
         mapView.map.addInputListener(listener)
 
         return binding.root

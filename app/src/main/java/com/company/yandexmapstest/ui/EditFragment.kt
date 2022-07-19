@@ -8,8 +8,8 @@ import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.FragmentEditBinding
 import com.company.yandexmapstest.util.AndroidUtils
-import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.util.MarkerDescArg
+import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -41,9 +41,12 @@ class EditFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.save -> {
-                    viewModel.editById(prefs.id?.toLong()!!, fragmentBinding?.etNewDescription?.text.toString())
-                    findNavController().navigateUp()
-                    AndroidUtils.hideKeyboard(requireView())
+                viewModel.editById(
+                    prefs.id?.toLong()!!,
+                    fragmentBinding?.etNewDescription?.text.toString()
+                )
+                findNavController().navigateUp()
+                AndroidUtils.hideKeyboard(requireView())
                 true
             }
             else -> super.onOptionsItemSelected(item)
