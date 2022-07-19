@@ -10,4 +10,9 @@
     <string name="dialog_title_set_description">Marker name</string>
     <string name="markers_list">markers list</string>
     <string name="menu_save">Save</string>
+    <string name="positive_button_fragment_dialog_text">ok</string>
+    <string name="negative_button_fragment_dialog_text">cancel</string>
+    <string name="dialog_title_text">Marker Description</string>
+    <string name="dialog_message_text">type new description</string>
+    <string name="fragment_edit_et_hint">type text here</string>
 </resources>

@@ -19,7 +19,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="55.00304, 37.20220" />
+            tools:text="Астрахань" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/menu"

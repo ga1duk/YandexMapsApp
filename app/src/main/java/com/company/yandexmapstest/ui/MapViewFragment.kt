@@ -24,6 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "fragment_dialog_marker"
+
 @AndroidEntryPoint
 class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 
@@ -193,7 +195,7 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
             markerNameDialog = MarkerNameDialogFragment()
             markerNameDialog.setTargetFragment(this@MapViewFragment, 300)
             if (fm != null) {
-                markerNameDialog.show(fm, "fragment_dialog_marker_name")
+                markerNameDialog.show(fm, TAG)
             }
         }
     }

@@ -11,7 +11,7 @@
         android:layout_marginBottom="24dp"
         android:backgroundTint="@android:color/transparent"
         android:gravity="start|top"
-        android:hint="type text here"
+        android:hint="@string/fragment_edit_et_hint"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

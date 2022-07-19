@@ -6,6 +6,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.company.yandexmapstest.R
 import com.company.yandexmapstest.entity.MarkerEntity
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
@@ -29,10 +30,10 @@ class MarkerNameDialogFragment : DialogFragment() {
 
         builder.setView(etDescription)
 
-        builder.setTitle("Marker Description")
-            .setMessage("type new description")
+        builder.setTitle(getString(R.string.dialog_title_text))
+            .setMessage(getString(R.string.dialog_message_text))
             .setCancelable(true)
-            .setPositiveButton("ok") { _, _ ->
+            .setPositiveButton(getString(R.string.positive_button_fragment_dialog_text)) { _, _ ->
                 viewModel.save(
                     MarkerEntity(
                         latitude = prefs.lat?.toDouble()!!,
@@ -42,7 +43,7 @@ class MarkerNameDialogFragment : DialogFragment() {
                 )
                 dismiss()
             }
-            .setNegativeButton("cancel") { _, _ ->
+            .setNegativeButton(getString(R.string.negative_button_fragment_dialog_text)) { _, _ ->
                 dismiss()
             }
 

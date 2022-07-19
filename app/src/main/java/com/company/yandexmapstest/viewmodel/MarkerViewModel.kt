@@ -20,42 +20,24 @@ class MarkerViewModel @Inject constructor(private val repository: MarkerReposito
         try {
             repository.save(marker)
         } catch (e: Exception) {
-//            _dataState.value = FeedModelState(error = true)
+//            TODO
         }
     }
 
     fun editById(id: Long, content: String) = viewModelScope.launch {
-        repository.updateDescriptionById(id, content)
+        try {
+            repository.updateDescriptionById(id, content)
+        } catch (e: Exception) {
+//            TODO
+        }
     }
-//
-//    fun changeDescription(description: String) {
-//        val text = description.trim()
-//        if (edited.value?.description == text) {
-//            return
-//        }
-//        edited.value = edited.value?.copy(description = text)
-//    }
-//
-//    fun saveMarker() {
-//        edited.value?.let {
-//            viewModelScope.launch {
-//                try {
-//                    repository.save(MarkerEntity.fromDto(it))
-////                    _dataState.value = FeedModelState()
-////                    _postCreated.value = Unit
-//                } catch (e: Exception) {
-////            _dataState.value = FeedModelState(error = true)
-//                }
-//            }
-//            edited.value = empty
-//        }
-//    }
+
 
     fun removeById(id: Long) = viewModelScope.launch {
         try {
             repository.removeById(id)
         } catch (e: Exception) {
-//            _dataState.value = FeedModelState(error = true)
+//            TODO
         }
     }
 }

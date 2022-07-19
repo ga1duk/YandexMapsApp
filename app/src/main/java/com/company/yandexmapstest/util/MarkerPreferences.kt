@@ -2,9 +2,11 @@ package com.company.yandexmapstest.util
 
 import android.content.Context
 
+private const val PREFS_FILE_NAME = "marker"
+
 class MarkerPreferences(context: Context) {
 
-    private val prefs = context.getSharedPreferences("marker", Context.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE)
 
     companion object {
         private const val idKey = "id"
