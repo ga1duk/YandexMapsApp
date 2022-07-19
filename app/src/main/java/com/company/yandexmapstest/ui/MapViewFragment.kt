@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.FragmentMapViewBinding
-import com.company.yandexmapstest.util.CoordinatesPreferences
+import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.util.StringArg
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
@@ -30,7 +30,7 @@ import javax.inject.Inject
 class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 
     @Inject
-    lateinit var prefs: CoordinatesPreferences
+    lateinit var prefs: MarkerPreferences
 
     companion object {
         var Bundle.textArg: String? by StringArg

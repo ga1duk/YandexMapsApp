@@ -12,7 +12,10 @@ interface MarkerDao {
     fun getAllMarkers(): Flow<List<MarkerEntity>>
 
     @Insert
-    suspend fun save(marker: MarkerEntity)
+    suspend fun insert(marker: MarkerEntity)
+
+    @Query("UPDATE MarkerEntity SET description = :description WHERE id = :id")
+    suspend fun updateDescriptionById(id: Long, description: String)
 
     @Query("DELETE FROM MarkerEntity WHERE id = :id")
     suspend fun removeById(id: Long)

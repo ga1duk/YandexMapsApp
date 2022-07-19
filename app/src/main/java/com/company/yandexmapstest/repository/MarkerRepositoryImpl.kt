@@ -14,7 +14,11 @@ class MarkerRepositoryImpl @Inject constructor(private val dao: MarkerDao) : Mar
         .flowOn(Dispatchers.Default)
 
     override suspend fun save(marker: MarkerEntity) {
-        dao.save(marker)
+        dao.insert(marker)
+    }
+
+    override suspend fun updateDescriptionById(id: Long, content: String) {
+        dao.updateDescriptionById(id, content)
     }
 
     override suspend fun removeById(id: Long) {

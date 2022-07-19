@@ -7,5 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface MarkerRepository {
     val data: Flow<List<Marker>>
     suspend fun save(marker: MarkerEntity)
+    suspend fun updateDescriptionById(id: Long, content: String)
     suspend fun removeById(id: Long)
 }

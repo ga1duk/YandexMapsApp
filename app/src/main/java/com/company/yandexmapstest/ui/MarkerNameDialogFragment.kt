@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.company.yandexmapstest.databinding.FragmentDialogMarkerNameBinding
 import com.company.yandexmapstest.entity.MarkerEntity
-import com.company.yandexmapstest.util.CoordinatesPreferences
+import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class MarkerNameDialogFragment : DialogFragment() {
 
     @Inject
-    lateinit var prefs: CoordinatesPreferences
+    lateinit var prefs: MarkerPreferences
 
     private val viewModel: MarkerViewModel by viewModels(ownerProducer = ::requireParentFragment)
 

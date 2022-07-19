@@ -13,8 +13,8 @@ import com.company.yandexmapstest.dto.Marker
 
 interface OnInteractionListener {
     fun onClick(marker: Marker) {}
+    fun onEdit(marker: Marker) {}
     fun onRemove(marker: Marker) {}
-//    fun onEdit(marker: Marker) {}
 }
 
 class MarkerAdapter(private val listener: OnInteractionListener) :
@@ -47,15 +47,14 @@ class MarkerViewHolder (
                     inflate(R.menu.options_marker)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
+                            R.id.edit -> {
+                            listener.onEdit(marker)
+                            true
+                        }
                             R.id.remove -> {
                                 listener.onRemove(marker)
                                 true
                             }
-                            R.id.edit -> {
-//                                onInteractionListener.onEdit(marker)
-                                true
-                            }
-
                             else -> false
                         }
                     }
