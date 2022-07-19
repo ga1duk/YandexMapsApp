@@ -11,14 +11,13 @@ import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.FragmentMapViewBinding
 import com.company.yandexmapstest.util.MarkerPreferences
-import com.company.yandexmapstest.util.StringArg
+import com.company.yandexmapstest.util.MarkerCoordinatesArg
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.mapview.MapView
-import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -33,7 +32,7 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
     lateinit var prefs: MarkerPreferences
 
     companion object {
-        var Bundle.textArg: String? by StringArg
+        var Bundle.markerCoordinatesArg: String? by MarkerCoordinatesArg
     }
 
     private lateinit var mapView: MapView
@@ -41,6 +40,11 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 //    private lateinit var userLocationLayer: UserLocationLayer
     private lateinit var mapObjectCollection: MapObjectCollection
     private lateinit var markerNameDialog: MarkerNameDialogFragment
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -50,8 +54,6 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
     ): View {
         val binding = FragmentMapViewBinding.inflate(inflater, container, false)
 
-        setHasOptionsMenu(true)
-
         mapView = binding.mapView
 
         mapKit = MapKitFactory.getInstance()
@@ -60,8 +62,9 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 ////        Проверяем, имеется ли разрешение на определение геопозиции пользователя
 //        requestLocationPermission()
 
-        if (arguments?.textArg != null) {
-            val parts = arguments?.textArg?.split(",")
+//        Показать выбранный маркер из списка на карте и увеличить зум в 10 раз
+        if (arguments?.markerCoordinatesArg != null) {
+            val parts = arguments?.markerCoordinatesArg?.split(",")
             val lat = parts?.get(0)
             val lon = parts?.get(1)
             if (lat != null && lon != null) {
@@ -94,11 +97,7 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
                         prefs.lon = point.longitude.toString()
                         showDialog()
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            requireContext(),
-                            "не получилось добавить маркер, попробуйте позже",
-                            Toast.LENGTH_LONG
-                        ).show()
+//                        TODO
                     }
                 }
             }

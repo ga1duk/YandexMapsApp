@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.FragmentEditBinding
 import com.company.yandexmapstest.util.AndroidUtils
-import com.company.yandexmapstest.util.MarkerDescArg
+import com.company.yandexmapstest.util.MarkerDescriptionArg
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +21,7 @@ class EditFragment : Fragment() {
     lateinit var prefs: MarkerPreferences
 
     companion object {
-        var Bundle.markerDescArg: String? by MarkerDescArg
+        var Bundle.markerDescriptionArg: String? by MarkerDescriptionArg
     }
 
     private var fragmentBinding: FragmentEditBinding? = null
@@ -32,6 +32,23 @@ class EditFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val binding = FragmentEditBinding.inflate(inflater, container, false)
+
+        fragmentBinding = binding
+
+        arguments?.markerDescriptionArg
+            ?.let(binding.etNewDescription::setText)
+
+        binding.etNewDescription.requestFocus()
+
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -51,23 +68,6 @@ class EditFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val binding = FragmentEditBinding.inflate(inflater, container, false)
-
-        fragmentBinding = binding
-
-        arguments?.markerDescArg
-            ?.let(binding.etNewDescription::setText)
-
-        binding.etNewDescription.requestFocus()
-
-        return binding.root
     }
 
     override fun onDestroyView() {

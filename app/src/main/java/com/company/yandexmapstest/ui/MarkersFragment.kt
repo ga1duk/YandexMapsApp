@@ -13,8 +13,8 @@ import com.company.yandexmapstest.adapter.MarkerAdapter
 import com.company.yandexmapstest.adapter.OnInteractionListener
 import com.company.yandexmapstest.databinding.FragmentMarkersBinding
 import com.company.yandexmapstest.dto.Marker
-import com.company.yandexmapstest.ui.EditFragment.Companion.markerDescArg
-import com.company.yandexmapstest.ui.MapViewFragment.Companion.textArg
+import com.company.yandexmapstest.ui.EditFragment.Companion.markerDescriptionArg
+import com.company.yandexmapstest.ui.MapViewFragment.Companion.markerCoordinatesArg
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +41,7 @@ class MarkersFragment : Fragment() {
                 findNavController().navigate(
                     R.id.action_markersFragment_to_mapViewFragment,
                     Bundle().apply {
-                        textArg = "${marker.latitude}, ${marker.longitude}"
+                        markerCoordinatesArg = "${marker.latitude}, ${marker.longitude}"
                     })
             }
 
@@ -50,7 +50,7 @@ class MarkersFragment : Fragment() {
                 findNavController().navigate(
                     R.id.action_markersFragment_to_editFragment,
                     Bundle().apply {
-                        markerDescArg = description
+                        markerDescriptionArg = description
                     }
                 )
                 prefs.id = marker.id.toString()
