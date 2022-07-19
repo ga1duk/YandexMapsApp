@@ -13,7 +13,6 @@ class MarkerRepositoryImpl @Inject constructor(private val dao: MarkerDao) : Mar
         .map(List<MarkerEntity>::toDto)
         .flowOn(Dispatchers.Default)
 
-
     override suspend fun save(marker: MarkerEntity) {
         dao.save(marker)
     }

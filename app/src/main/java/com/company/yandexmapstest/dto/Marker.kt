@@ -4,5 +4,5 @@ data class Marker(
     val id: Long? = null,
     val latitude: Double,
     val longitude: Double,
-    val userData: String? = null
+    val description: String? = null
 )

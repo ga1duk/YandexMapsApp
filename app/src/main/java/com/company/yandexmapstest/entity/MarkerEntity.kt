@@ -10,9 +10,9 @@ data class MarkerEntity(
     val id: Long? = null,
     val latitude: Double,
     val longitude: Double,
-    val userData: String? = null
+    val description: String? = null
 ) {
-    fun toDto() = Marker(id, latitude, longitude, userData)
+    fun toDto() = Marker(id, latitude, longitude, description)
 }
 
 

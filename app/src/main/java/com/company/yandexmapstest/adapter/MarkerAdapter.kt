@@ -14,6 +14,7 @@ import com.company.yandexmapstest.dto.Marker
 interface OnInteractionListener {
     fun onClick(marker: Marker) {}
     fun onRemove(marker: Marker) {}
+//    fun onEdit(marker: Marker) {}
 }
 
 class MarkerAdapter(private val listener: OnInteractionListener) :
@@ -29,17 +30,18 @@ class MarkerAdapter(private val listener: OnInteractionListener) :
     }
 }
 
-class MarkerViewHolder(
+
+class MarkerViewHolder (
     private val binding: CardMarkerBinding,
     private val listener: OnInteractionListener
 ) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(marker: Marker) {
         with(binding) {
-            tvMarker.text = "${marker.latitude}, ${marker.longitude}"
-            root.setOnClickListener {
-                listener.onClick(marker)
-            }
+            tvMarker.text = marker.description
+                root.setOnClickListener {
+                    listener.onClick(marker)
+                }
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.options_marker)

@@ -38,7 +38,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MapViewFragment : Fragment(), UserLocationObjectListener {
+class MapViewFragment : Fragment(), UserLocationObjectListener,
+    MarkerNameDialogFragment.MarkerNameDialogListener {
 
     private val viewModel: MarkerViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
@@ -46,11 +47,14 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
         var Bundle.textArg: String? by StringArg
     }
 
-    private lateinit var markerListener: MapObjectTapListener
+    //    private lateinit var markerListener: MapObjectTapListener
     private lateinit var mapView: MapView
     private lateinit var mapKit: MapKit
     private lateinit var userLocationLayer: UserLocationLayer
     private lateinit var mapObjectCollection: MapObjectCollection
+    private lateinit var markerNameDialog: MarkerNameDialogFragment
+
+    private var description: String = ""
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -77,6 +81,9 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
                     Point(lat.toDouble(), lon.toDouble()),
                     ImageProvider.fromResource(requireContext(), R.drawable.mark)
                 )
+                mapView.map.move(
+                    CameraPosition(Point(lat.toDouble(), lon.toDouble()), 10F, 0F, 0F)
+                )
             }
         }
 
@@ -87,25 +94,26 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
 //        Создаём коллекцию маркеров
         mapObjectCollection = mapView.map.mapObjects.addCollection()
 
-        markerListener = MapObjectTapListener { _, point ->
-            Toast.makeText(
-                requireContext(),
-                "${point.latitude}, ${point.longitude}",
-                Toast.LENGTH_LONG
-            ).show()
-            true
-        }
-
+//        markerListener = MapObjectTapListener { _, point ->
+//            Toast.makeText(
+//                requireContext(),
+//                "${point.latitude}, ${point.longitude}",
+//                Toast.LENGTH_LONG
+//            ).show()
+//            true
+//        }
 //        Обрабатываем нажатия на точки на карте
         val listener = object : InputListener {
             override fun onMapLongTap(map: Map, point: Point) {
-            }
-
-            override fun onMapTap(map: Map, point: Point) {
 //                Добавляем маркер в точку нажатия (и в коллекцию маркеров)
+                showDialog()
+//                markerNameDialog.show(requireActivity().supportFragmentManager, "myDialog")
                 lifecycleScope.launch {
                     try {
-                        addMarker(point.latitude, point.longitude, R.drawable.mark)
+                        addMarker(
+                            point.latitude, point.longitude,
+                            R.drawable.mark, description
+                        )
                     } catch (e: Exception) {
                         Toast.makeText(
                             requireContext(),
@@ -114,6 +122,9 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
                         ).show()
                     }
                 }
+            }
+
+            override fun onMapTap(map: Map, point: Point) {
             }
         }
         mapView.map.addInputListener(listener)
@@ -214,15 +225,31 @@ class MapViewFragment : Fragment(), UserLocationObjectListener {
         lat: Double,
         lon: Double,
         @DrawableRes imageRes: Int,
-        userData: String? = null
+        description: String
     ): PlacemarkMapObject {
-        val marker = mapObjectCollection.addPlacemark(
+        val marker: PlacemarkMapObject = mapObjectCollection.addPlacemark(
             Point(lat, lon),
-            ImageProvider.fromResource(requireContext(), imageRes)
+            ImageProvider.fromResource(
+                requireContext(), imageRes
+            )
         )
-        marker.userData = userData
-        markerListener.let { marker.addTapListener(it) }
-        viewModel.save(MarkerEntity(latitude = lat, longitude = lon, userData = userData))
+//        markerListener.let { marker.addTapListener(it) }
+        viewModel.save(MarkerEntity(latitude = lat, longitude = lon, description = description))
         return marker
+    }
+
+    fun showDialog() {
+        if (fragmentManager != null) {
+            val fm = fragmentManager
+            markerNameDialog = MarkerNameDialogFragment()
+            markerNameDialog.setTargetFragment(this@MapViewFragment, 300)
+            if (fm != null) {
+                markerNameDialog.show(fm, "fragment_dialog_marker_name")
+            }
+        }
+    }
+
+    override fun onFinishEditDialog(inputText: String) {
+        description = inputText
     }
 }

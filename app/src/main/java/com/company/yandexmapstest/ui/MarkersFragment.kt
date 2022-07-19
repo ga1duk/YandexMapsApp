@@ -11,12 +11,14 @@ import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.adapter.MarkerAdapter
 import com.company.yandexmapstest.adapter.OnInteractionListener
+import com.company.yandexmapstest.dao.MarkerDao
 import com.company.yandexmapstest.databinding.FragmentMarkersBinding
 import com.company.yandexmapstest.dto.Marker
 import com.company.yandexmapstest.ui.MapViewFragment.Companion.textArg
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MarkersFragment : Fragment() {
