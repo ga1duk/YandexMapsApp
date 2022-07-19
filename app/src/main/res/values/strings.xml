@@ -8,4 +8,5 @@
     <string name="dialog_positive_button_text">Yes</string>
     <string name="dialog_negative_button_text">No</string>
     <string name="dialog_title_set_description">Marker name</string>
+    <string name="markers_list">markers list</string>
 </resources>

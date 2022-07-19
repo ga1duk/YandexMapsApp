@@ -2,9 +2,7 @@ package com.company.yandexmapstest.ui
 
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -52,6 +50,8 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
     ): View {
         val binding = FragmentMapViewBinding.inflate(inflater, container, false)
 
+        setHasOptionsMenu(true)
+
         mapView = binding.mapView
 
         mapKit = MapKitFactory.getInstance()
@@ -73,10 +73,6 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
                     CameraPosition(Point(lat.toDouble(), lon.toDouble()), 10F, 0F, 0F)
                 )
             }
-        }
-
-        binding.btnMarkers.setOnClickListener {
-            findNavController().navigate(R.id.action_mapViewFragment_to_markersFragment)
         }
 
 //        Создаём коллекцию маркеров
@@ -161,12 +157,12 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 //    override fun onObjectUpdated(userLocationView: UserLocationView, p1: ObjectEvent) {
 //    }
 
-    private fun setUpUserLocationLayer() {
-        userLocationLayer = mapKit.createUserLocationLayer(mapView.mapWindow)
-        userLocationLayer.isVisible = true
+//    private fun setUpUserLocationLayer() {
+//        userLocationLayer = mapKit.createUserLocationLayer(mapView.mapWindow)
+//        userLocationLayer.isVisible = true
 //        userLocationLayer.isHeadingEnabled = true
 //        userLocationLayer.setObjectListener(this)
-    }
+//    }
 
 //    @RequiresApi(Build.VERSION_CODES.M)
 //    private fun requestLocationPermission() {
@@ -202,18 +198,6 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 //            }
 //        }
 
-    override fun onStop() {
-        mapView.onStop()
-        MapKitFactory.getInstance().onStop()
-        super.onStop()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        MapKitFactory.getInstance().onStart()
-        mapView.onStart()
-    }
-
     fun showDialog() {
         if (fragmentManager != null) {
             val fm = fragmentManager
@@ -223,5 +207,32 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
                 markerNameDialog.show(fm, "fragment_dialog_marker_name")
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.markers_list -> {
+                findNavController()
+                    .navigate(R.id.action_mapViewFragment_to_markersFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart()
+        mapView.onStart()
+    }
+
+    override fun onStop() {
+        mapView.onStop()
+        MapKitFactory.getInstance().onStop()
+        super.onStop()
     }
 }
