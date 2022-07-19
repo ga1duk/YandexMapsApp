@@ -1,13 +1,11 @@
 package com.company.yandexmapstest.ui
 
+import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.company.yandexmapstest.databinding.FragmentDialogMarkerNameBinding
 import com.company.yandexmapstest.entity.MarkerEntity
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
@@ -23,38 +21,31 @@ class MarkerNameDialogFragment : DialogFragment() {
 
     private val viewModel: MarkerViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
-    private lateinit var binding: FragmentDialogMarkerNameBinding
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = AlertDialog.Builder(requireContext())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentDialogMarkerNameBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
+        val etDescription = EditText(requireContext())
+        etDescription.requestFocus()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val title = "MarkerName"
-        dialog?.setTitle(title)
-        binding.etDescription.requestFocus()
-        dialog?.window?.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
-        )
-        binding.btnCancel.setOnClickListener {
-            dismiss()
-        }
+        builder.setView(etDescription)
 
-        binding.btnOk.setOnClickListener {
-            viewModel.save(
-                MarkerEntity(
-                    latitude = prefs.lat?.toDouble()!!,
-                    longitude = prefs.lon?.toDouble()!!,
-                    description = binding.etDescription.text.toString()
+        builder.setTitle("Marker Description")
+            .setMessage("type new description")
+            .setCancelable(true)
+            .setPositiveButton("ok") { _, _ ->
+                viewModel.save(
+                    MarkerEntity(
+                        latitude = prefs.lat?.toDouble()!!,
+                        longitude = prefs.lon?.toDouble()!!,
+                        description = etDescription.text.toString()
+                    )
                 )
-            )
-            dismiss()
-        }
+                dismiss()
+            }
+            .setNegativeButton("cancel") { _, _ ->
+                dismiss()
+            }
+
+        return builder.show()
     }
 }
