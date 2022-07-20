@@ -1,9 +1,8 @@
 package com.company.yandexmapstest.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.company.yandexmapstest.entity.MarkerEntity
+import com.company.yandexmapstest.model.MapModelState
 import com.company.yandexmapstest.repository.MarkerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,11 +15,15 @@ class MarkerViewModel @Inject constructor(private val repository: MarkerReposito
 
     val data = repository.data.asLiveData(Dispatchers.Default)
 
+    private var _dataState = MutableLiveData<MapModelState>()
+    val dataState: LiveData<MapModelState>
+        get() = _dataState
+
     fun save(marker: MarkerEntity) = viewModelScope.launch {
         try {
             repository.save(marker)
         } catch (e: Exception) {
-//            TODO
+            _dataState.value = MapModelState(error = true)
         }
     }
 
@@ -28,7 +31,7 @@ class MarkerViewModel @Inject constructor(private val repository: MarkerReposito
         try {
             repository.updateDescriptionById(id, content)
         } catch (e: Exception) {
-//            TODO
+            _dataState.value = MapModelState(error = true)
         }
     }
 
@@ -37,7 +40,7 @@ class MarkerViewModel @Inject constructor(private val repository: MarkerReposito
         try {
             repository.removeById(id)
         } catch (e: Exception) {
-//            TODO
+            _dataState.value = MapModelState(error = true)
         }
     }
 }

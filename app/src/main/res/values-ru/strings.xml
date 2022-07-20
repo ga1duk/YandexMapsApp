@@ -12,4 +12,5 @@
     <string name="dialog_title_text">Описание маркера</string>
     <string name="dialog_message_text">Введите новое описание</string>
     <string name="fragment_edit_et_hint">введите текст здесь</string>
+    <string name="error_toast">ошибка!</string>
 </resources>

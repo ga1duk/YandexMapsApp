@@ -17,6 +17,7 @@ import com.company.yandexmapstest.ui.EditFragment.Companion.markerDescriptionArg
 import com.company.yandexmapstest.ui.MapViewFragment.Companion.markerCoordinatesArg
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -68,6 +69,13 @@ class MarkersFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner) { markers ->
             adapter.submitList(markers)
+        }
+
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_toast, Snackbar.LENGTH_LONG)
+                    .show()
+            }
         }
 
         return binding.root

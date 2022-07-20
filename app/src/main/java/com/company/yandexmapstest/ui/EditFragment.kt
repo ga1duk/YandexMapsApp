@@ -11,6 +11,7 @@ import com.company.yandexmapstest.util.AndroidUtils
 import com.company.yandexmapstest.util.MarkerDescriptionArg
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -47,6 +48,14 @@ class EditFragment : Fragment() {
             ?.let(binding.etNewDescription::setText)
 
         binding.etNewDescription.requestFocus()
+
+
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_toast, Snackbar.LENGTH_LONG)
+                    .show()
+            }
+        }
 
         return binding.root
     }

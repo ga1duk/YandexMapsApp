@@ -114,6 +114,13 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 
         mapView.map.addInputListener(listener)
 
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_toast, Snackbar.LENGTH_LONG)
+                    .show()
+            }
+        }
+
         return binding.root
     }
 

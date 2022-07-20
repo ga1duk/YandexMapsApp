@@ -12,4 +12,5 @@
     <string name="dialog_title_text">Marker Description</string>
     <string name="dialog_message_text">type new description</string>
     <string name="fragment_edit_et_hint">type text here</string>
+    <string name="error_toast">error!</string>
 </resources>
