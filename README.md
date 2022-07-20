@@ -13,4 +13,4 @@
 ### To display the marker with the coordinates of the certain point, press on the point you need to display in the list of points.
 <br/>
 <br/>
-<img width="150" height="300" src="/marker_description.png"> <img width="150" height="300" src="/markers_list.jpg"> <img width="150" height="300" src="/marker_on_map.jpg">
+<img width="150" height="300" src="/marker_description.jpg"> <img width="150" height="300" src="/markers_list.jpg"> <img width="150" height="300" src="/marker_on_map.jpg">
