@@ -59,7 +59,7 @@ class EditFragment : Fragment() {
         return when (item.itemId) {
             R.id.save -> {
                 viewModel.editById(
-                    prefs.id?.toLong()!!,
+                    prefs.id?.toLong() ?: 0L,
                     fragmentBinding?.etNewDescription?.text.toString()
                 )
                 findNavController().navigateUp()

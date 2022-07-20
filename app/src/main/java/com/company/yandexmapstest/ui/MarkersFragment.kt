@@ -59,7 +59,7 @@ class MarkersFragment : Fragment() {
 
             override fun onRemove(marker: Marker) {
                 lifecycleScope.launch {
-                    viewModel.removeById(marker.id!!)
+                    viewModel.removeById(marker.id ?: 0L)
                 }
             }
         })

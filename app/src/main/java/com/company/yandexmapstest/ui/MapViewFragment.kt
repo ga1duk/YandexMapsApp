@@ -6,12 +6,16 @@ import android.view.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.company.yandexmapstest.MAPKIT_API_KEY
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.FragmentMapViewBinding
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.util.MarkerCoordinatesArg
+import com.company.yandexmapstest.viewmodel.MarkerViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
@@ -34,6 +38,8 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
     companion object {
         var Bundle.markerCoordinatesArg: String? by MarkerCoordinatesArg
     }
+
+    private val viewModel: MarkerViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
     private lateinit var mapView: MapView
     private lateinit var mapKit: MapKit
@@ -97,7 +103,7 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
                         prefs.lon = point.longitude.toString()
                         showDialog()
                     } catch (e: Exception) {
-//                        TODO
+                        Snackbar.make(binding.root, "Не удалось добавить метку, попробуйте позже", Toast.LENGTH_LONG).show()
                     }
                 }
             }
