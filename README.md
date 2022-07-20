@@ -11,3 +11,6 @@
 ### To delete certain point from the list, press menu button corresponding to this point, and choose menu item "delete" near this point.
 ### To edit certain point from the list, press menu button corresponding to this point, and choose menu item "edit" near this point.
 ### To display the marker with the coordinates of the certain point, press on the point you need to display in the list of points.
+<br/>
+<br/>
+<img width="150" height="300" src="/marker_description.png"> <img width="150" height="300" src="/markers_list.jpg"> <img width="150" height="300" src="/marker_on_map.jpg">
