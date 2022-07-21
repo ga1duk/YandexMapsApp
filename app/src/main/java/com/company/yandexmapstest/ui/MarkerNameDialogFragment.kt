@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.entity.MarkerEntity
 import com.company.yandexmapstest.util.AndroidUtils.hideKeyboard
+import com.company.yandexmapstest.util.AndroidUtils.showKeyboard
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,9 +39,7 @@ class MarkerNameDialogFragment : DialogFragment() {
         etDescription.gravity = Gravity.CENTER_HORIZONTAL
         etDescription.requestFocus()
         builder.setView(etDescription)
-        val imm: InputMethodManager =
-            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        showKeyboard(activity)
 
 
         builder.setTitle(getString(R.string.dialog_title_text))

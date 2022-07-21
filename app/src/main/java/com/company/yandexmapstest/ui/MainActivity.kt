@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        Инициализируем библиотеку
+//        Инициализируем библиотеку Yandex.Mapkit
         MapKitFactory.initialize(this)
 
         super.onCreate(savedInstanceState)

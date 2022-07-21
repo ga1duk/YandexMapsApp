@@ -27,7 +27,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+//  Всё, что закомментировано - относится к определению текущей геопозиции пользователя
+//  При необходимости - раскомментировать
+
 private const val TAG = "fragment_dialog_marker"
+private const val DEFAULT_LAT = 55.749625
+private const val DEFAULT_LON = 37.629020
 
 @AndroidEntryPoint
 class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
@@ -65,6 +71,11 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
         mapKit = MapKitFactory.getInstance()
         mapKit.resetLocationManagerToDefault()
 
+//        Для определения текущей геопозиции, убрать этот кусок кода
+        mapView.map.move(
+            CameraPosition(Point(DEFAULT_LAT, DEFAULT_LON), 10F, 0F, 0F)
+        )
+
 ////        Проверяем, имеется ли разрешение на определение геопозиции пользователя
 //        requestLocationPermission()
 
@@ -90,7 +101,7 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 //        Обрабатываем нажатия на точки на карте
         val listener = object : InputListener {
             override fun onMapLongTap(map: Map, point: Point) {
-//                Добавляем маркер в точку нажатия (и в коллекцию маркеров)
+//                Добавляем маркер в точку нажатия и показываем диалог для ввода описания к маркеру
                 lifecycleScope.launch {
                     try {
                         mapObjectCollection.addPlacemark(
@@ -229,11 +240,13 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 
     override fun onStart() {
         super.onStart()
+//        Обязательно добавляем следующие строки кода, согласно документации к Yandex.Mapkit API
         MapKitFactory.getInstance().onStart()
         mapView.onStart()
     }
 
     override fun onStop() {
+//        Обязательно добавляем следующие строки кода, согласно документации к Yandex.Mapkit API
         mapView.onStop()
         MapKitFactory.getInstance().onStop()
         super.onStop()

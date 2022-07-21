@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.FragmentEditBinding
 import com.company.yandexmapstest.util.AndroidUtils
+import com.company.yandexmapstest.util.AndroidUtils.showKeyboard
 import com.company.yandexmapstest.util.MarkerDescriptionArg
 import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
@@ -43,6 +44,8 @@ class EditFragment : Fragment() {
         val binding = FragmentEditBinding.inflate(inflater, container, false)
 
         fragmentBinding = binding
+
+        showKeyboard(activity)
 
         arguments?.markerDescriptionArg
             ?.let(binding.etNewDescription::setText)
