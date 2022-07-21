@@ -7,24 +7,23 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.company.yandexmapstest.MAPKIT_API_KEY
 import com.company.yandexmapstest.R
 import com.company.yandexmapstest.databinding.FragmentMapViewBinding
-import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.util.MarkerCoordinatesArg
+import com.company.yandexmapstest.util.MarkerPreferences
 import com.company.yandexmapstest.viewmodel.MarkerViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.yandex.mapkit.MapKit
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Circle
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 
@@ -49,7 +48,8 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
 
     private lateinit var mapView: MapView
     private lateinit var mapKit: MapKit
-//    private lateinit var userLocationLayer: UserLocationLayer
+
+    //    private lateinit var userLocationLayer: UserLocationLayer
     private lateinit var mapObjectCollection: MapObjectCollection
     private lateinit var markerNameDialog: MarkerNameDialogFragment
 
@@ -102,21 +102,15 @@ class MapViewFragment : Fragment()/*, UserLocationObjectListener*/ {
         val listener = object : InputListener {
             override fun onMapLongTap(map: Map, point: Point) {
 //                Добавляем маркер в точку нажатия и показываем диалог для ввода описания к маркеру
-                lifecycleScope.launch {
-                    try {
-                        mapObjectCollection.addPlacemark(
-                            Point(point.latitude, point.longitude),
-                            ImageProvider.fromResource(
-                                requireContext(), R.drawable.mark
-                            )
-                        )
-                        prefs.lat = point.latitude.toString()
-                        prefs.lon = point.longitude.toString()
-                        showDialog()
-                    } catch (e: Exception) {
-                        Snackbar.make(binding.root, "Не удалось добавить метку, попробуйте позже", Toast.LENGTH_LONG).show()
-                    }
-                }
+                mapObjectCollection.addPlacemark(
+                    Point(point.latitude, point.longitude),
+                    ImageProvider.fromResource(
+                        requireContext(), R.drawable.mark
+                    )
+                )
+                prefs.lat = point.latitude.toString()
+                prefs.lon = point.longitude.toString()
+                showDialog()
             }
 
             override fun onMapTap(map: Map, point: Point) {
