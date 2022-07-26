@@ -11,8 +11,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 interface MarkerRepositoryModule {
-
     @Binds
     @Singleton
-    fun bindsPostRepositoryImpl(postRepositoryImpl: MarkerRepositoryImpl): MarkerRepository
+    fun bindsMarkerRepositoryImpl(markerRepositoryImpl: MarkerRepositoryImpl): MarkerRepository
 }
