@@ -18,13 +18,6 @@ bin/
 gen/
 out/
 
-# Gradle files
-.gradle
-.gradle/
-gradle/
-build/
-gradle.*
-
 # Signing files
 .signing/
 
